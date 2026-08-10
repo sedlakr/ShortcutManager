@@ -52,6 +52,18 @@ describe("shortcuts - normalizer", function () {
 		expect(normalizer.fromEvent(event(191, true))).toBe("ctrl+/");
 	});
 
+	it("normalize localized modifier names", function () {
+		expect(normalizer.normalize("Strg+Umschalt+1")).toBe("ctrl+shift+1");
+		expect(normalizer.normalize("Strg+B")).toBe("ctrl+b");
+		expect(normalizer.normalize("Umschalt+Tab")).toBe("shift+tab");
+		expect(normalizer.normalize("Ctrl+Maiusc+1")).toBe("ctrl+shift+1");
+		expect(normalizer.normalize("Maiusc+Tab")).toBe("shift+tab");
+		expect(normalizer.normalize("STRG+UMSCHALT+B")).toBe("ctrl+shift+b");
+		expect(normalizer.normalize("Umschalt+Strg+Alt+B")).toBe("ctrl+alt+shift+b");
+		expect(normalizer.normalize("Strg+Umschalt+[0..9]")).toBe("ctrl+shift+[0..9]");
+		expect(normalizer.normalize("Strg+B, Strg+Umschalt+C")).toBe("ctrl+b, ctrl+shift+c");
+	});
+
 	it("normalize shortcut regex string", function () {
 		expect(normalizer.normalize("Ctrl+[0..9]")).toBe("ctrl+[0..9]");
 	});

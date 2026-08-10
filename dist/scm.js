@@ -368,6 +368,12 @@ SC.Normalizer = (function (SC, p) {
 		aliasMap = {
 			enter: "return"
 		},
+		//modifier names as printed on non-english keyboards (de: Strg/Umschalt, it: Maiusc)
+		modifierAliasMap = {
+			strg: "ctrl",
+			umschalt: "shift",
+			maiusc: "shift"
+		},
 		//name keys
 		specialKeys = {
 			8: "backspace",
@@ -422,6 +428,15 @@ SC.Normalizer = (function (SC, p) {
 	 */
 	function getOrder(part) {
 		return orderMap[part];
+	}
+
+	/**
+	 * Returns the canonical modifier name for given part.
+	 * @param {string} part
+	 * @returns {string}
+	 */
+	function normalizeModifier(part) {
+		return modifierAliasMap[part] || part;
 	}
 
 	/**
@@ -515,16 +530,18 @@ SC.Normalizer = (function (SC, p) {
 			part,
 			parts,
 			order,
+			modifier,
 			result = [],
 			others = [];
 
 		parts = splitShortcutByPlus(shortcut);
 		// build new array with ctrl/alt/shift sorted
 		for (i = 0; i < parts.length; i++) {
-			order = getOrder(parts[i]);
+			modifier = normalizeModifier(parts[i]);
+			order = getOrder(modifier);
 			//not defined, add ti array
 			if (order !== undefined) {
-				result[order] = parts[i];
+				result[order] = modifier;
 			} else {
 				//normalize names
 				part = normalizeNames(parts[i]);

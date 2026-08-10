@@ -1,3 +1,8 @@
+### v1.0.5
+
+### Fixed
+- localized modifier names (`Strg`, `Umschalt`, `Maiusc`) are normalized to `ctrl`/`shift`, so shortcuts registered from a translated UI match real keyboard events
+
 ### v1.0.4
 
 ### Fixed
